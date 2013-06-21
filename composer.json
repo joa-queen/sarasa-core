@@ -1,6 +1,6 @@
 {
     "name": "sarasa/core",
-    "type": "php-framework",
+    "type": "php",
     "description": "PHP Core Framework for PHP 5.3",
     "keywords": ["framework"],
     "homepage": "http://github.com/joacodeviaje/sarasa-core",
