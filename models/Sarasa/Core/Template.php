@@ -46,8 +46,8 @@ class Template extends \Smarty {
 
 		$this->assign('sarasa', self::$sarasa);
 
-		if (substr($template, 0, 1) != '/') $template = FrontController::$bundle . '/templates/' . $template;
-		else $template = 'sarasa/templates/' . substr($template, 1);
+		if (substr($template, 0, 1) != '/') $template = FrontController::$bundle . '/Views/' . $template;
+		else $template = 'Sarasa/Views/' . substr($template, 1);
 		
 		parent::display($template, $cache_id, $compile_id, $parent);
 	}

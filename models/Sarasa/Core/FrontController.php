@@ -235,6 +235,8 @@ class FrontController {
 		while ($ruta = array_shift($routing_var)) {
 			$key = array_shift($keys);
 
+			$ruta['bundle'] = ucfirst(strtolower($ruta['bundle'])); //Adaptando a la convención
+
 			$j = 0;
 			$map = true;
 			$ruta_variables = array();
@@ -291,7 +293,7 @@ class FrontController {
 				$j ++;
 			}
 			if ($map) {
-				$url_final = 'app/' . $ruta['bundle'] . '/controllers/' . $ruta['controller'] . $extension;
+				$url_final = 'app/' . $ruta['bundle'] . '/Controllers/' . $ruta['controller'] . $extension;
 				$ruta_action = isset($ruta['action']) ? $ruta['action'] : 'index';
 				foreach ( $ruta_variables as $variable => $valor ) {
 					$_GET[$variable] = $valor;
