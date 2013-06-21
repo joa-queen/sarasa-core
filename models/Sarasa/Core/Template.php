@@ -33,9 +33,9 @@ class Template extends \Smarty {
 				);
 
 			if (!FrontController::config('production')) {
-				$sarasa['mtime'] = FrontController::$mtime;
-				$sarasa['debugpath'] = FrontController::$debugpath;
-				$sarasa['development'] = true;
+				self::$sarasa['mtime'] = FrontController::$mtime;
+				self::$sarasa['debugpath'] = FrontController::$debugpath;
+				self::$sarasa['development'] = true;
 			}
 		}
 	}
