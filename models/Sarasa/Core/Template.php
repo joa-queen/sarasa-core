@@ -101,7 +101,7 @@ class Template extends \Smarty {
 				while (substr($prefix, -1) == '/') $prefix = substr($prefix, 0, -1);
 				while (substr($prefix, 0, 1) == '/') $prefix = substr($prefix, 1);
 
-				if ($prefix == substr($aux, 0, strlen($prefix)) && file_exists($file)) {
+				if (file_exists($file)) {
 					$string = file_get_contents($file);
 				
 					$newrout = json_decode($string, true);
