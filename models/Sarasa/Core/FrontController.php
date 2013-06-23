@@ -236,6 +236,7 @@ class FrontController {
 			$key = array_shift($keys);
 
 			$ruta['bundle'] = ucfirst(strtolower($ruta['bundle'])); //Adaptando a la convención
+			$ruta['controller'] = ucfirst(strtolower($ruta['controller'])) . 'Controller'; //Adaptando a la convención
 
 			$j = 0;
 			$map = true;
