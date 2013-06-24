@@ -21,8 +21,8 @@ class Template extends \Smarty {
 		$this->registerPlugin("function","url", array($this, 'url'));
 
 		if ($full) {
-			$css = FrontController::$bundle . '/' . FrontController::$controller . '.css';
-			$js = FrontController::$bundle . '/' . FrontController::$controller . '.js';
+			$css = FrontController::$bundle . '/' . strtolower(str_replace('Controller','',FrontController::$controller)) . '.css';
+			$js = FrontController::$bundle . '/' . strtolower(str_replace('Controller','',FrontController::$controller)) . '.js';
 			if (file_exists('../public/css/' . $css)) $this->css($css);
 			if (file_exists('../public/js/' . $js)) $this->js($js);
 			
