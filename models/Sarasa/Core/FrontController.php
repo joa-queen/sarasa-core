@@ -85,7 +85,7 @@ class FrontController
         }
     }
 
-    private static function errorHandler($errno, $errstr, $errfile, $errline, array $errcontext)
+    public static function errorHandler($errno, $errstr, $errfile, $errline, array $errcontext)
     {
         $message = 'Error of level ';
         switch ($errno) {
