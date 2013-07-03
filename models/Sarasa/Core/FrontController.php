@@ -282,7 +282,7 @@ class FrontController
             $ruta_variables = array();
             $ruta_method = isset($ruta['method']) ? $ruta['method'] : 'get';
 
-            if (!isset($_SERVER['HTTP_AJAX_FUNCTION']) && strtolower($ruta_method) != strtolower($_SERVER['REQUEST_METHOD'])) {
+            if (!isset($_SERVER['HTTP_AJAX_FUNCTION']) && isset($ruta['url']) &&  strtolower($ruta_method) != strtolower($_SERVER['REQUEST_METHOD'])) {
                 continue;
             }
             if (isset($ruta['security']) && !isset($_SESSION[$ruta['security']])) {
