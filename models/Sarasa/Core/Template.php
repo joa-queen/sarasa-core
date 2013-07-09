@@ -159,6 +159,10 @@ class Template extends \Smarty
                     $_SERVER['SERVER_NAME'] = str_replace(array('http://', 'https://'), '', FrontController::config('domain'));
                 }
 
+                while (substr($url, -1) == '/') {
+                    $url = substr($url, 0, -1);
+                }
+
                 return 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . FrontController::config('preurl') . $url;
             }
         }
