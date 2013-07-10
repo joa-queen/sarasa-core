@@ -374,6 +374,15 @@ class FrontController
             include $url_final;
 
             return self::$action;
+        } elseif (isset($variables[0]) && isset($variables[1]) && !isset($variables[2]) && is_file('../app/' . ucfirst(strtolower($variables[0])) . '/Controllers/' . ucfirst(strtolower($variables[1])) . 'Controller.php')) {
+            self::$key = '';
+            self::$bundle = ucfirst(strtolower($variables[0]));
+            self::$controller = ucfirst(strtolower($variables[1])) . 'Controller';
+            self::$action = 'index';
+
+            include '../app/' . ucfirst(strtolower($variables[0])) . '/Controllers/' . ucfirst(strtolower($variables[1])) . 'Controller.php';
+
+            return self::$action;
         } else {
             Template::error404();
         }
