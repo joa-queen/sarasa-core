@@ -26,7 +26,7 @@ class FrontController
         $er = ((self::config('production') || (isset($_SERVER['HTTP_AJAX_FUNCTION']) && $_SERVER['HTTP_AJAX_FUNCTION'] == 'debugbar')) ? 0 : E_ALL);
         error_reporting($er);
 
-        set_error_handler(array('self','errorHandler'));
+        set_error_handler(array('\Sarasa\Core\FrontController','errorHandler'));
 
         if (!self::config('production')) {
             self::$debugpath = bin2hex(openssl_random_pseudo_bytes(1)) . '/' . bin2hex(openssl_random_pseudo_bytes(1));
@@ -126,8 +126,6 @@ class FrontController
             $errline
         );
         self::debug('warnings', array(array('message' => $message, 'context' => $errcontext)));
-
-        return false;
     }
 
     final public function debug($key, $value)
@@ -342,9 +340,9 @@ class FrontController
                 }
             }
             foreach ($url_partes as $parte) {
-                if (strlen($parte) && ($parte{0} == ":" && $variables[$j])) {
+                if (strlen($parte) && ($parte{0} == ":" && isset($variables[$j]))) {
                     $ruta_variables[substr($parte, 1)] = $variables[$j];
-                } elseif ($parte != $variables[$j]) {
+                } elseif (!isset($variables[$j]) || $parte != $variables[$j]) {
                     $map = false;
                     break;
                 }
@@ -374,7 +372,7 @@ class FrontController
             include $url_final;
 
             return self::$action;
-        } elseif (isset($variables[0]) && isset($variables[1]) && !isset($variables[2]) && is_file('../app/' . ucfirst(strtolower($variables[0])) . '/Controllers/' . ucfirst(strtolower($variables[1])) . 'Controller.php')) {
+        } elseif (self::config('forceroute') && isset($variables[0]) && isset($variables[1]) && !isset($variables[2]) && is_file('../app/' . ucfirst(strtolower($variables[0])) . '/Controllers/' . ucfirst(strtolower($variables[1])) . 'Controller.php')) {
             self::$key = '';
             self::$bundle = ucfirst(strtolower($variables[0]));
             self::$controller = ucfirst(strtolower($variables[1])) . 'Controller';
