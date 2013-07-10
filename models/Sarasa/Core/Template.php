@@ -23,6 +23,9 @@ class Template extends \Smarty
         $this->registerPlugin("function", "url", array($this, 'url'));
 
         if ($full) {
+            $this->css('main.css');
+            $this->js('main.js');
+            
             $css = FrontController::$bundle . '/' . strtolower(str_replace('Controller', '', FrontController::$controller)) . '.css';
             $js = FrontController::$bundle . '/' . strtolower(str_replace('Controller', '', FrontController::$controller)) . '.js';
             if (file_exists('../public/css/' . $css)) {
@@ -32,9 +35,6 @@ class Template extends \Smarty
                 $this->js($js);
             }
 
-            $this->css('main.css');
-            $this->js('main.js');
-            
             self::$sarasa = array(
                 'sitename'    => FrontController::config('sitename'),
                 'title'       => 'Welcome',
