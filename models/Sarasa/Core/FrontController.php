@@ -225,6 +225,25 @@ class FrontController
             $aux = substr($aux, 0, -1);
         }
 
+        /** Looking for redirects **/
+        $file = $_SERVER['DOCUMENT_ROOT'] . "/../redirects.json";
+        if (is_file($file)) {
+            $string = file_get_contents($file);
+            $redirects = json_decode($string, true);
+
+            if (is_array($redirects)) {
+                foreach ($redirects as $redirect) {
+                    if ($aux == $redirect['origin']) {
+                        $url = self::config('preurl') . $redirect['destination'];
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header('Location: ' . $url);
+                        die();
+                    }
+                }
+            }
+        }
+        /** **/
+
         /** Pasando variables via GET tradicional a la variable $_VARIABLES **/
         $auxget = explode('?', $aux);
         $aux = $auxget[0];
