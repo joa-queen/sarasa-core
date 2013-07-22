@@ -128,7 +128,7 @@ class FrontController
         self::debug('warnings', array(array('message' => $message, 'context' => $errcontext)));
     }
 
-    final public function debug($key, $value)
+    final static public function debug($key, $value)
     {
         if (!isset(self::$debug)) {
             self::$debug = array();
