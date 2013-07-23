@@ -128,7 +128,7 @@ class FrontController
         self::debug('warnings', array(array('message' => $message, 'context' => $errcontext)));
     }
 
-    final public function debug($key, $value)
+    final public static function debug($key, $value)
     {
         if (!isset(self::$debug)) {
             self::$debug = array();
@@ -418,6 +418,8 @@ class FrontController
             header('HTTP/1.1 404 Not found');
             echo Template::error404();
             exit();
+        } elseif ($e->getCode() == 222) {
+            echo Template::error222($e);
         } else {
             header('HTTP/1.1 500');
             echo Template::error500($e);

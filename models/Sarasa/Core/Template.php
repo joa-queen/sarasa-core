@@ -224,6 +224,20 @@ class Template extends \Smarty
         die();
     }
 
+    /**
+     * Imprime un error 222
+     *
+     */
+    public static function error222($e = null)
+    {
+        $template = new Template();
+
+        $template->title('Ocurrió un error');
+        $template->assign('err', $e->getMessage());
+        $template->assign('noindex', true);
+        $template->display('/222.tpl');
+    }
+
     public static function sanitizeOutput($buffer)
     {
         $search = array(
