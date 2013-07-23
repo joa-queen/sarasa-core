@@ -230,10 +230,10 @@ class Template extends \Smarty
      */
     public static function error222($e = null)
     {
-        $template = new Template();
+        $template = new \Sarasa\Models\Template();
 
         $template->title('Ocurrió un error');
-        $template->assign('err', $e->getMessage());
+        $template->assign('error', $e->getMessage());
         $template->assign('noindex', true);
         $template->display('/222.tpl');
     }
