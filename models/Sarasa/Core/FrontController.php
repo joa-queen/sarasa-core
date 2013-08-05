@@ -143,9 +143,9 @@ class FrontController
 
     final private static function createEntityManager()
     {
-        $paths = array('../../../../../app');
+        $paths = array(__DIR__ . '/../../../../../../app');
         $isDevMode = self::config('production') ? false : true;
-        $proxyDir = '../../../compile/proxies';
+        $proxyDir = __DIR__ . '/../../../../compile/proxies';
 
         $dbParams = array(
                 'driver'   => 'pdo_mysql',
