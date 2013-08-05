@@ -143,8 +143,9 @@ class FrontController
 
     final private static function createEntityManager()
     {
-        $paths = array("../models");
+        $paths = array('../../../../../app');
         $isDevMode = self::config('production') ? false : true;
+        $proxyDir = '../../../compile/proxies';
 
         $dbParams = array(
                 'driver'   => 'pdo_mysql',
@@ -153,7 +154,7 @@ class FrontController
                 'dbname'   => self::config('dbname'),
         );
 
-        $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
+        $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, $proxyDir);
         self::$em = EntityManager::create($dbParams, $config);
         if (!self::config('production')) {
             self::$doctrinestack = new \Doctrine\DBAL\Logging\DebugStack();
