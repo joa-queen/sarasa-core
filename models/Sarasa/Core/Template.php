@@ -19,6 +19,7 @@ class Template extends \Smarty
 
         $this->setTemplateDir('../app');
         $this->setCompileDir('../vendor/sarasa/compile/templates');
+        $this->setCacheDir('../vendor/sarasa/compile/cache');
         
         $this->registerPlugin("function", "url", array($this, 'url'));
 
