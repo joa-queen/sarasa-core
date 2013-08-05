@@ -66,6 +66,17 @@ class Template extends \Smarty
         parent::display($template, $cache_id, $compile_id, $parent);
     }
 
+    public function isCached($template = null, $cache_id = null, $compile_id = null, $parent = null)
+    {
+        if (substr($template, 0, 1) != '/') {
+            $template = FrontController::$bundle . '/Views/' . $template;
+        } else {
+            $template = 'Sarasa/Views/' . substr($template, 1);
+        }
+
+        return parent::isCached($template, $cache_id, $compile_id, $parent);
+    }
+
     public function js($file)
     {
         $this->js[] = $file . '?' . filemtime($_SERVER['DOCUMENT_ROOT'] . '/js/' . $file);
