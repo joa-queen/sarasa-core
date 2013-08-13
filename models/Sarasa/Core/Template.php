@@ -8,8 +8,8 @@ namespace Sarasa\Core;
  */
 class Template extends \Smarty
 {
-    private $js = array();
-    private $css = array();
+    protected $js = array();
+    protected $css = array();
     private $_timestamp;
     protected static $sarasa;
     
