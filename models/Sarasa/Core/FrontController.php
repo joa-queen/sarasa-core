@@ -43,7 +43,7 @@ class FrontController
         }
 
         if (self::config('production')) {
-            ob_start(array('\Sarasa\Core\Template', "sanitizeOutput"));
+            ob_start(array('\Sarasa\Models\Template', "sanitizeOutput"));
         }
 
         if (self::config('maintenance')) {

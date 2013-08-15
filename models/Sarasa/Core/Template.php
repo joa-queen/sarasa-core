@@ -208,7 +208,7 @@ class Template extends \Smarty
     public static function error500($e = null)
     {
         header("HTTP/1.1 500 Internal Server Error");
-        $smarty = new Template();
+        $smarty = new \Sarasa\Models\Template();
 
         if ($e && !FrontController::config('production')) {
             $err = $e->getMessage();
@@ -230,7 +230,7 @@ class Template extends \Smarty
     public static function error404()
     {
         header("HTTP/1.0 404 Not Found");
-        $smarty = new Template();
+        $smarty = new \Sarasa\Models\Template();
 
         $smarty->title('Página no encontrada');
         $smarty->assign('noindex', true);
