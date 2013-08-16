@@ -326,7 +326,7 @@ class FrontController
 
                     if (is_array($newrout)) {
                         array_walk($newrout, 'self::addPrefix', $prefix);
-                        $routing_var = array_merge($routing_var, $newrout);
+                        $routing_var = array_merge($newrout, $routing_var);
                     }
                 }
 

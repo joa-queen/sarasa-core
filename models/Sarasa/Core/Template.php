@@ -152,8 +152,8 @@ class Template extends \Smarty
 
                     if (is_array($newrout)) {
                         array_walk($newrout, 'self::addPrefix', $prefix);
-                        $routing_var = array_merge($routing_var, $newrout);
-                        $keys = array_merge($keys, array_keys($newrout));
+                        $routing_var = array_merge($newrout, $routing_var);
+                        $keys = array_merge(array_keys($newrout), $keys);
                     }
                 }
 
