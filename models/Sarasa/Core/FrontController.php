@@ -411,7 +411,7 @@ class FrontController
         $item['url'] = $prefix . '/' . $item['url'];
     }
 
-    final public static function handlePageException($e)
+    public static function handlePageException($e)
     {
         $template = new Template();
 
