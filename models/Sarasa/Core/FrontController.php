@@ -305,7 +305,7 @@ class FrontController
             if (!isset($_SERVER['HTTP_AJAX_FUNCTION']) && isset($ruta['url']) &&  strtolower($ruta_method) != strtolower($_SERVER['REQUEST_METHOD'])) {
                 continue;
             }
-            if (isset($ruta['security']) && !isset($_SESSION[$ruta['security']])) {
+            if (isset($ruta['security']) && !\Sarasa\Models\MainController::security($ruta['security'])) {
                 continue;
             }
 
@@ -425,6 +425,15 @@ class FrontController
             header('HTTP/1.1 500');
             echo Template::error500($e);
             die();
+        }
+    }
+
+    protected static function security($flag)
+    {
+        if (isset($_SESSION[$flag])) {
+            return true;
+        } else {
+            return false;
         }
     }
 
