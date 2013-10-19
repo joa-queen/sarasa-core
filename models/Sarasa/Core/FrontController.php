@@ -428,7 +428,7 @@ class FrontController
         }
     }
 
-    protected static function security($flag)
+    public static function security($flag)
     {
         if (isset($_SESSION[$flag])) {
             return true;
