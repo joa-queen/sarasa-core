@@ -11,6 +11,7 @@ class FrontController
     public static $bundle = '';
     public static $controller = '';
     public static $action = '';
+    public static $parameters = array();
     public static $mtime;
     public static $debugpath;
     public static $method;
@@ -300,7 +301,6 @@ class FrontController
 
             $j = 0;
             $map = true;
-            $ruta_variables = array();
             $ruta_method = isset($ruta['method']) ? $ruta['method'] : 'get';
 
             if (!isset($_SERVER['HTTP_AJAX_FUNCTION']) && isset($ruta['url']) &&  strtolower($ruta_method) != strtolower($_SERVER['REQUEST_METHOD'])) {
@@ -362,7 +362,7 @@ class FrontController
             }
             foreach ($url_partes as $parte) {
                 if (strlen($parte) && ($parte{0} == ":" && isset($variables[$j]))) {
-                    $ruta_variables[substr($parte, 1)] = $variables[$j];
+                    self::$parameters[substr($parte, 1)] = $variables[$j];
                 } elseif (!isset($variables[$j]) || $parte != $variables[$j]) {
                     $map = false;
                     break;
@@ -372,9 +372,13 @@ class FrontController
             if ($map) {
                 $url_final = 'app/' . $ruta['bundle'] . '/Controllers/' . $ruta['controller'] . $extension;
                 $ruta_action = isset($ruta['action']) ? $ruta['action'] : 'index';
-                foreach ($ruta_variables as $variable => $valor) {
+
+                //Backwards compatibility
+                foreach (self::$parameters as $variable => $valor) {
                     $_GET[$variable] = $valor;
                 }
+                //
+                
                 break;
             }
         }
