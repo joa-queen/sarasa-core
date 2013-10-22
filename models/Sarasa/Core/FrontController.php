@@ -149,6 +149,7 @@ class FrontController
 
         $dbParams = array(
                 'driver'   => 'pdo_mysql',
+                'host'     => self::config('dbhost'),
                 'user'     => self::config('dbuser'),
                 'password' => self::config('dbpass'),
                 'dbname'   => self::config('dbname'),
