@@ -68,9 +68,11 @@ class Template extends \Smarty
 
     public function isCached($template = null, $cache_id = null, $compile_id = null, $parent = null)
     {
-        if (substr($template, 0, 1) != '/') {
+        $slashcount = substr_count($template, '/');
+
+        if (substr($template, 0, 1) != '/' && $slashcount < 2) {
             $template = FrontController::$bundle . '/Views/' . $template;
-        } else {
+        } elseif ($slashcount < 2) {
             $template = 'Sarasa/Views/' . substr($template, 1);
         }
 
