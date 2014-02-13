@@ -407,7 +407,7 @@ class FrontController
 
             return self::$action;
         } else {
-            Template::error404();
+            \Sarasa\Models\Template::error404();
         }
     }
 
@@ -422,13 +422,13 @@ class FrontController
 
         if ($e->getCode() == 404) {
             header('HTTP/1.1 404 Not found');
-            echo Template::error404();
+            echo \Sarasa\Models\Template::error404();
             exit();
         } elseif ($e->getCode() == 222) {
-            echo Template::error222($e);
+            echo \Sarasa\Models\Template::error222($e);
         } else {
             header('HTTP/1.1 500');
-            echo Template::error500($e);
+            echo \Sarasa\Models\Template::error500($e);
             die();
         }
     }
