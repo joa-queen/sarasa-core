@@ -35,7 +35,7 @@ class FrontController
         }
 
         extract($_SERVER);
-        setlocale(LC_ALL, "es_ES");
+        setlocale(LC_ALL, "es_ES.UTF8");
         date_default_timezone_set("America/Argentina/Buenos_Aires");
 
         if (!isset($_SESSION['lang']) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
