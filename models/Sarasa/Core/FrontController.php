@@ -230,14 +230,39 @@ class FrontController
 
         /** Looking for redirects **/
         $file = $_SERVER['DOCUMENT_ROOT'] . "/../redirects.json";
+
         if (is_file($file)) {
             $string = file_get_contents($file);
             $redirects = json_decode($string, true);
 
             if (is_array($redirects)) {
                 foreach ($redirects as $redirect) {
-                    if ($aux == $redirect['origin']) {
-                        $url = self::config('preurl') . $redirect['destination'];
+                    $redirectfail = false;
+                    
+                    $origin = explode('/', $redirect['origin']);
+                    $destination = explode('/', $redirect['destination']);
+                    $auxparts = explode('/', $aux);
+                    $search = array();
+                    $replace = array();
+
+                    foreach ($origin as $key => $value) {
+                        if (substr($value, 0, 1) == ':') {
+                            foreach ($destination as $dk => $dv) {
+                                if ($dv == $value) {
+                                    $search[] = $value;
+                                    $replace[] = $auxparts[$key];
+
+                                    break;
+                                }
+                            }
+                        } elseif ($value != $auxparts[$key]) {
+                            $redirectfail = true;
+                            break;
+                        }
+                    }
+
+                    if (!$redirectfail && $aux == str_replace($search, $replace, $redirect['origin'])) {
+                        $url = self::config('preurl') . str_replace($search, $replace, $redirect['destination']);
                         header("HTTP/1.1 301 Moved Permanently");
                         header('Location: ' . $url);
                         die();
