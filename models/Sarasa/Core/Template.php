@@ -128,13 +128,6 @@ class Template extends \Smarty
             $j = 0;
             $map = true;
             $ruta_variables = array();
-            $ruta_method = isset($ruta['method']) ? $ruta['method'] : 'get';
-            if (!isset($_SERVER['REQUEST_METHOD'])) {
-                $_SERVER['REQUEST_METHOD'] = 'GET';
-            }
-            if (!isset($_SERVER['HTTP_AJAX_FUNCTION']) && strtolower($ruta_method) != strtolower($_SERVER['REQUEST_METHOD'])) {
-                continue;
-            }
             
             //Llama a otro routing.json interno
             if (!isset($ruta['url'])) {
@@ -212,11 +205,11 @@ class Template extends \Smarty
         header("HTTP/1.1 500 Internal Server Error");
         $smarty = new \Sarasa\Models\Template();
 
-        if ($e && !FrontController::config('production')) {
+        if ($e && !\Sarasa\Core\FrontController::config('production')) {
             $err = $e->getMessage();
         }
         
-        $smarty->title(Lang::_('El sitio se encuentra en mantenimiento'));
+        $smarty->title('El sitio se encuentra en mantenimiento');
         $smarty->assign('noindex', true);
         if (isset($err)) {
             $smarty->assign('err', $err);

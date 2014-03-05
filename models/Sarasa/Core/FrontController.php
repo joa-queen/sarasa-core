@@ -24,9 +24,6 @@ class FrontController
 
     public function __construct()
     {
-        $er = ((self::config('production') || (isset($_SERVER['HTTP_AJAX_FUNCTION']) && $_SERVER['HTTP_AJAX_FUNCTION'] == 'debugbar')) ? 0 : E_ALL);
-        error_reporting($er);
-
         set_error_handler(array('\Sarasa\Core\FrontController','errorHandler'));
 
         if (!self::config('production')) {
