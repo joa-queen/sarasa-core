@@ -316,9 +316,8 @@ class FrontController
         while ($ruta = array_shift($routing_var)) {
             $key = array_shift($keys);
 
-            $ruta['bundle'] = ucfirst(strtolower($ruta['bundle'])); //Adaptando a la convención
             if (isset($ruta['controller'])) {
-                $ruta['controller'] = ucfirst(strtolower($ruta['controller'])) . 'Controller'; //Adaptando a la convención
+                $ruta['controller'] = $ruta['controller'] . 'Controller'; //Adaptando a la convención
             }
 
             $j = 0;
@@ -419,13 +418,13 @@ class FrontController
             include $url_final;
 
             return self::$action;
-        } elseif (self::config('forceroute') && isset($variables[0]) && isset($variables[1]) && !isset($variables[2]) && is_file('../app/' . ucfirst(strtolower($variables[0])) . '/Controllers/' . ucfirst(strtolower($variables[1])) . 'Controller.php')) {
+        } elseif (self::config('forceroute') && isset($variables[0]) && isset($variables[1]) && !isset($variables[2]) && is_file('../app/' . $variables[0] . '/Controllers/' . $variables[1] . 'Controller.php')) {
             self::$key = '';
-            self::$bundle = ucfirst(strtolower($variables[0]));
-            self::$controller = ucfirst(strtolower($variables[1])) . 'Controller';
+            self::$bundle = $variables[0];
+            self::$controller = $variables[1] . 'Controller';
             self::$action = 'index';
 
-            include '../app/' . ucfirst(strtolower($variables[0])) . '/Controllers/' . ucfirst(strtolower($variables[1])) . 'Controller.php';
+            include '../app/' . $variables[0] . '/Controllers/' . $variables[1] . 'Controller.php';
 
             return self::$action;
         } else {
