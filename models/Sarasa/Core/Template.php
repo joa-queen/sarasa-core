@@ -107,7 +107,7 @@ class Template extends \Smarty
         return self::getUrl($parameters['name'], $parameters);
     }
 
-    public static function getUrl($module, $parameters = array(), $method = 'get')
+    public static function getUrl($module, $parameters = array(), $method = 'get', $domain = null)
     {
         $file = $_SERVER['DOCUMENT_ROOT'] . "/../routing.json";
         if (!is_file($file)) {
@@ -131,7 +131,8 @@ class Template extends \Smarty
             
             //Llama a otro routing.json interno
             if (!isset($ruta['url'])) {
-                $file = $_SERVER['DOCUMENT_ROOT'] . "/../app/" . $ruta['bundle'] . "/routing.json";
+                $router = (isset($ruta['router']) ? $ruta['router'] : 'routing') . '.json';
+                $file = $_SERVER['DOCUMENT_ROOT'] . "/../app/" . $ruta['bundle'] . "/" . $router;
                 $prefix = $ruta['prefix'] ? $ruta['prefix'] : '';
                 while (substr($prefix, -1) == '/') {
                     $prefix = substr($prefix, 0, -1);
@@ -162,15 +163,21 @@ class Template extends \Smarty
                 array_walk($search, 'self::addDots');
                 $url = str_replace($search, $parameters, $url);
 
-                if (!isset($_SERVER['SERVER_NAME'])) {
-                    $_SERVER['SERVER_NAME'] = str_replace(array('http://', 'https://'), '', FrontController::config('domain'));
+                if ($domain) {
+                    $domain = str_replace(array('http://', 'https://'), '', $domain);
+                } else {
+                    if (!isset($_SERVER['SERVER_NAME'])) {
+                        $domain = str_replace(array('http://', 'https://'), '', FrontController::config('domain'));
+                    } else {
+                        $domain = $_SERVER['SERVER_NAME'];
+                    }
                 }
 
                 while (substr($url, -1) == '/') {
                     $url = substr($url, 0, -1);
                 }
 
-                return 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . FrontController::config('preurl') . $url;
+                return 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . $domain . FrontController::config('preurl') . $url;
             }
         }
     }
