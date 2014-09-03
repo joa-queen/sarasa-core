@@ -16,10 +16,10 @@ class Template extends \Smarty
     public function __construct($full = true)
     {
         parent::__construct();
-
-        $this->setTemplateDir('../app');
-        $this->setCompileDir('../vendor/sarasa/compile/templates');
-        $this->setCacheDir('../vendor/sarasa/compile/cache');
+        
+        $this->setTemplateDir(__DIR__ . '/../../../../../../app');
+        $this->setCompileDir(__DIR__ . '/../../../../compile/templates');
+        $this->setCacheDir(__DIR__ . '/../../../../compile/cache');
         
         $this->registerPlugin("function", "url", array($this, 'url'));
 
