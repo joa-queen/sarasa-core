@@ -24,7 +24,7 @@ class FrontController
 
     public function __construct()
     {
-        set_error_handler(array('\Sarasa\Core\FrontController','errorHandler'));
+        //set_error_handler(array('\Sarasa\Core\FrontController','errorHandler'));
 
         if (!self::config('production')) {
             self::$debugpath = bin2hex(openssl_random_pseudo_bytes(1)) . '/' . bin2hex(openssl_random_pseudo_bytes(1));
@@ -385,25 +385,35 @@ class FrontController
             if (!$ruta['url']) {
                 $num_variables = 1;
             }
-            if ($num_partes < $num_variables) {
-                $j ++;
-                continue;
-            } elseif ($num_partes > $num_variables) {
-                $check = $url_partes [$num_variables];
-                if ($check{0} != ':') {
+
+            if (!strpos($ruta['url'], '*')) {
+                if ($num_partes < $num_variables) {
                     $j ++;
                     continue;
+                } elseif ($num_partes > $num_variables) {
+                    $check = $url_partes [$num_variables];
+                    if ($check{0} != ':') {
+                        $j ++;
+                        continue;
+                    }
                 }
             }
+
             foreach ($url_partes as $parte) {
+                if ($parte == '*') {
+                    break;
+                }
+
                 if (strlen($parte) && ($parte{0} == ":" && isset($variables[$j]))) {
                     self::$parameters[substr($parte, 1)] = $variables[$j];
                 } elseif (!isset($variables[$j]) || $parte != $variables[$j]) {
                     $map = false;
                     break;
                 }
+                
                 $j ++;
             }
+
             if ($map) {
                 $url_final = 'app/' . $ruta['bundle'] . '/Controllers/' . $ruta['controller'] . $extension;
                 $ruta_action = isset($ruta['action']) ? $ruta['action'] : 'index';
