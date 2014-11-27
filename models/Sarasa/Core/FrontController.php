@@ -191,16 +191,23 @@ class FrontController
     final public static function route()
     {
         /** Chequeos previos **/
-        $headers = apache_request_headers();
-        if (isset($headers['AJAX_FUNCTION'])) {
-            $_SERVER['HTTP_AJAX_FUNCTION'] = $headers['AJAX_FUNCTION'];
+        if (function_exists('getallheaders')) {
+            $headers = getallheaders();
+            if (isset($headers['AJAX_FUNCTION'])) {
+                $_SERVER['HTTP_AJAX_FUNCTION'] = $headers['AJAX_FUNCTION'];
+            }
+            if (isset($headers['AJAX_URL'])) {
+                $_SERVER['HTTP_AJAX_URL'] = $headers['AJAX_URL'];
+            }
         }
-        if (isset($headers['AJAX_URL'])) {
-            $_SERVER['HTTP_AJAX_URL'] = $headers['AJAX_URL'];
-        }
+
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
         }
+        if (isset($_SERVER['HTTP_X_REAL_IP'])) {
+            $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_REAL_IP'];
+        }
+        /** **/
 
         $security = self::config('security');
 
@@ -316,9 +323,8 @@ class FrontController
         while ($ruta = array_shift($routing_var)) {
             $key = array_shift($keys);
 
-            $ruta['bundle'] = ucfirst(strtolower($ruta['bundle'])); //Adaptando a la convención
             if (isset($ruta['controller'])) {
-                $ruta['controller'] = ucfirst(strtolower($ruta['controller'])) . 'Controller'; //Adaptando a la convención
+                $ruta['controller'] = $ruta['controller'] . 'Controller'; //Adaptando a la convención
             }
 
             $j = 0;
@@ -334,7 +340,8 @@ class FrontController
 
             //Llama a otro routing.json interno
             if (!isset($ruta['url'])) {
-                $file = $_SERVER['DOCUMENT_ROOT'] . "/../app/" . $ruta['bundle'] . "/routing.json";
+                $router = (isset($ruta['router']) ? $ruta['router'] : 'routing') . '.json';
+                $file = $_SERVER['DOCUMENT_ROOT'] . "/../app/" . $ruta['bundle'] . "/" . $router;
                 $prefix = $ruta['prefix'] ? $ruta['prefix'] : '';
                 while (substr($prefix, -1) == '/') {
                     $prefix = substr($prefix, 0, -1);
@@ -353,9 +360,15 @@ class FrontController
                     }
                 }
 
+                $bundle = $ruta['bundle'];
+
                 continue;
             }
             //
+
+            if (!isset($ruta['bundle']) && isset($bundle)) {
+                $ruta['bundle'] = $bundle;
+            }
 
             while (substr($ruta['url'], -1) == '/') {
                 $ruta['url'] = substr($ruta['url'], 0, -1);
@@ -419,13 +432,13 @@ class FrontController
             include $url_final;
 
             return self::$action;
-        } elseif (self::config('forceroute') && isset($variables[0]) && isset($variables[1]) && !isset($variables[2]) && is_file('../app/' . ucfirst(strtolower($variables[0])) . '/Controllers/' . ucfirst(strtolower($variables[1])) . 'Controller.php')) {
+        } elseif (self::config('forceroute') && isset($variables[0]) && isset($variables[1]) && !isset($variables[2]) && is_file('../app/' . $variables[0] . '/Controllers/' . $variables[1] . 'Controller.php')) {
             self::$key = '';
-            self::$bundle = ucfirst(strtolower($variables[0]));
-            self::$controller = ucfirst(strtolower($variables[1])) . 'Controller';
+            self::$bundle = $variables[0];
+            self::$controller = $variables[1] . 'Controller';
             self::$action = 'index';
 
-            include '../app/' . ucfirst(strtolower($variables[0])) . '/Controllers/' . ucfirst(strtolower($variables[1])) . 'Controller.php';
+            include '../app/' . $variables[0] . '/Controllers/' . $variables[1] . 'Controller.php';
 
             return self::$action;
         } else {
