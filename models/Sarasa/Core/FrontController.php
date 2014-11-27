@@ -413,7 +413,7 @@ class FrontController
         if (isset($url_final) && is_file($url_final)) {
             self::$key = (isset($key) ? $key : '');
             self::$bundle = $ruta['bundle'];
-            self::$controller = $ruta['controller'];
+            self::$controller = str_replace('/', '\\', $ruta['controller']);
             self::$action = $ruta_action;
 
             include $url_final;
